@@ -1,38 +1,106 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&family=Rubik&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Rubik', sans-serif;
+  color: white;
+
+  --blue: #1c79ed;
+  --green: #3dd900;
+  --yellow: #ffdf00;
+  --red: #e10000;
 }
 
-.App-logo {
-  height: 40vmin;
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--blue);
+}
+
+ul {
+  display: flex;
+  gap: 30px;
+}
+
+h1 {
+  color: var(--yellow);
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  cursor: none;
+  margin: 0 auto;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 25px;
+}
+
+.cusor {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
   pointer-events: none;
+  border: 3px dotted red;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.37);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
+  background-color: red;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.charator {
+  gap: 10px;
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  border-radius: 8px;
+  background-color: var(--blue);
+}
+
+.charators {
+  display: flex;
+  gap: 20px;
+}
+
+.avatar {
+  height: 70px;
+  width: 70px;
+  border-radius: 10px;
+  background-color: orange;
+}
+
+.feedback-bar {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 10px;
+  position: sticky;
+  gap: 10px;
 }
 
-.App-link {
-  color: #61dafb;
+.photo {
+  margin: 50px auto;
+  border-radius: 25px;
+  position: relative;
+  min-width: 300px;
+  max-width: 1200px;
+
+  border: 5px solid red;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.target {
+  position: absolute;
+  background-color: rgba(153, 255, 0, 0.301);
+  border: 2px solid rgb(0, 228, 0);
 }
