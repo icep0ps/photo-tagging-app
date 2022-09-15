@@ -1,40 +1,63 @@
 import React from 'react';
 
-const CharacterSelect = ({character,usersClick}) => {
+const CharacterSelect = ({ usersX, usersY, handleuserClick }) => {
+  const targetFactory = (name, top, bottom, left, right) => {
+    return {
+      id: name,
+      top: top,
+      bottom: bottom,
+      left: left,
+      right: right,
+      isFound: false,
+    };
+  };
 
-const verifyCharater = (character_id,usersClick)=>{
+  const goat = targetFactory('goat', 423, 460, 997, 1040);
+  const sumo_wrestler = targetFactory('sumo ', 290, 340, 69, 127);
+  const Kangaroo_man = targetFactory('Kangaroo', 675, 751, 852, 890);
 
-    const goat = targetFactory('goat', 423, 460, 997, 1040);
-    const sumo_wrestler = targetFactory('sumo ', 290, 340, 69, 127);
-    const Kangaroo_man = targetFactory('Kangaroo', 675, 751, 852, 890);
+  const searchCharaterID = (character_id) => {
+    switch (character_id) {
+      case 'goat':
+        verifyCharater(goat, usersX, usersY);
+        break;
+      case 'sumo':
+        verifyCharater(sumo_wrestler, usersX, usersY);
+        break;
+      case 'kangaroo':
+        verifyCharater(Kangaroo_man, usersX, usersY);
+        break;
+      default:
+        break;
+    }
+    handleuserClick();
+  };
 
-    switch(character_id){
-    case 'goat':
-        return
-    case 'sumo':
-        return
-    case 'kangaroo':
-        return
-    default:return
-}
-}    
+  const verifyCharater = (character, usersX, usersY) => {
     if (
-        usersX >= Kangaroo_man.left &&
-        usersX <= Kangaroo_man.right &&
-        usersY >= Kangaroo_man.top &&
-        usersY <= Kangaroo_man.bottom
-      ) {
-        console.log('Found him correct');
-      } else {
-        console.log(event, usersX, usersY);
-        console.log('keep looking wrong');
-      }
+      usersX >= character.left &&
+      usersX <= character.right &&
+      usersY >= character.top &&
+      usersY <= character.bottom
+    ) {
+      console.log('Found him correct');
+    } else {
+      console.log('keep looking wrong');
+    }
+  };
+
   return (
-    <div>
+    <div
+      className="menu"
+      style={{
+        top: `${usersY}px`,
+        left: `${usersX}px`,
+      }}
+    >
       <ul>
-        <li onClick={}>Goat eating grass</li>
-        <li onClick={}>Sumo wrestler</li>
-        <li onClick={}>Kangaroo_mascott</li>
+        <li onClick={() => searchCharaterID('goat')}>Goat eating grass</li>
+        <li onClick={() => searchCharaterID('sumo')}>Sumo wrestler</li>
+        <li onClick={() => searchCharaterID('kangaroo')}>Kangaroo_mascott</li>
       </ul>
     </div>
   );
