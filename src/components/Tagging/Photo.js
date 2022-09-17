@@ -6,64 +6,74 @@ const Photo = () => {
   const [usersX, setUsersX] = useState();
   const [usersY, setUsersY] = useState();
 
-  const handleClick = (event) => {
-    console.log(event);
-    const usersX = event.nativeEvent.offsetX;
-    const usersY = event.nativeEvent.offsetY;
-    setUserClick((prev) => !prev);
-    setUsersX((prev) => `${usersX}`);
-    setUsersY((prev) => `${usersY}`);
-
-    const convertToPercentage = (first_value, second_value) => {
-      const percentage = 6.25;
-      return ((first_value - second_value) * percentage) / 100;
-    };
-
-    const convertPositionToPercentage = (value) => {
-      const percentage = 6.25;
-      return (value * percentage) / 100;
+  const targetFactory = (name, top, bottom, left, right) => {
+    return {
+      id: name,
+      top: top,
+      bottom: bottom,
+      left: left,
+      right: right,
+      isFound: false,
     };
   };
 
-  const showCusor = (event) => {
-    if (userClick) {
-      return;
-    }
-    const cusor = document.querySelector('.cusor');
-    const mouseX = event.clientX;
-    const mouseY = event.clientY;
-    cusor.style.top = `${mouseY}px`;
-    cusor.style.left = `${mouseX}px`;
-    cusor.style.top = `${mouseY}px`;
-    cusor.style.left = `${mouseX}px`;
+  const sky = targetFactory(
+    'sky',
+    16.19697419163453,
+    17.798872738059924,
+    45.27896995708154,
+    48.497854077253216
+  );
+
+  const handleTargetResize = () => {
+    const target = document.querySelector('.target');
+    target.style.setProperty('top', `${sky.top}%`);
+    target.style.setProperty('left', `${sky.left}%`);
+  };
+
+  const handleClick = (event) => {
+    const photoHeight = document.querySelector('.photo').offsetHeight;
+    const photoWidth = document.querySelector('.photo').offsetWidth;
+    const target = document.querySelector('.target');
+    target.style.width = `${sky.right - sky.left}%`;
+    target.style.height = `${sky.bottom - sky.top}%`;
+
+    const usersX = event.nativeEvent.offsetX;
+    const usersY = event.nativeEvent.offsetY;
+    const calculatedX = (usersY / photoHeight) * 100;
+    const calculatedY = (usersX / photoWidth) * 100;
+
+    handleTargetResize();
+    setUsersX(calculatedX);
+    setUsersY(calculatedY);
+    setUserClick(!userClick);
   };
 
   if (userClick) {
     return (
       <div className="photo">
-        <div className="cusor"></div>
+        <div className="target"></div>
         <CharacterSelect
           usersX={usersX}
           usersY={usersY}
           handleuserClick={setUserClick}
+          userClick={userClick}
         ></CharacterSelect>
         <img
-          src={require('../../img/photo.jpg')}
+          src={require('../../img/bczqo5kyc3641.png')}
           alt=""
           onClick={handleClick}
-          onMouseMove={showCusor}
         />
       </div>
     );
   } else {
     return (
       <div className="photo">
-        <div className="cusor"></div>
+        <div className="target"></div>
         <img
-          src={require('../../img/photo.jpg')}
+          src={require('../../img/bczqo5kyc3641.png')}
           alt=""
           onClick={handleClick}
-          onMouseMove={showCusor}
         />
       </div>
     );
