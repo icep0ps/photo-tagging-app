@@ -12,9 +12,6 @@ const CharacterSelect = ({ usersX, usersY, handleuserClick, userClick }) => {
     };
   };
 
-  const goat = targetFactory('goat', 423, 460, 997, 1040);
-  const sumo_wrestler = targetFactory('sumo ', 290, 340, 69, 127);
-  const Kangaroo_man = targetFactory('Kangaroo', 675, 751, 852, 890);
   const sky = targetFactory(
     'sky',
     16.19697419163453,
@@ -23,16 +20,28 @@ const CharacterSelect = ({ usersX, usersY, handleuserClick, userClick }) => {
     48.497854077253216
   );
 
+  const bird = targetFactory(
+    'bird',
+    49.89617324236132,
+    51.61673094037378,
+    16.630901287553648,
+    19.15236051502146
+  );
+
+  const wipeout = targetFactory(
+    'wipeout',
+    85.1972708395135,
+    87.71877781073866,
+    69.47424892703863,
+    73.92703862660944
+  );
   const searchCharaterID = (character_id) => {
     switch (character_id) {
-      case 'goat':
-        verifyCharater(goat, usersX, usersY);
+      case 'bird':
+        verifyCharater(bird, usersX, usersY);
         break;
-      case 'sumo':
-        verifyCharater(sumo_wrestler, usersX, usersY);
-        break;
-      case 'kangaroo':
-        verifyCharater(Kangaroo_man, usersX, usersY);
+      case 'skater':
+        verifyCharater(wipeout, usersX, usersY);
         break;
       case 'sky':
         verifyCharater(sky, usersX, usersY);
@@ -40,7 +49,6 @@ const CharacterSelect = ({ usersX, usersY, handleuserClick, userClick }) => {
       default:
         break;
     }
-    handleuserClick();
   };
 
   const verifyCharater = (character, usersX, usersY) => {
@@ -50,12 +58,13 @@ const CharacterSelect = ({ usersX, usersY, handleuserClick, userClick }) => {
       usersX >= character.top &&
       usersX <= character.bottom
     ) {
-      console.log(character.left, usersY, character.right);
-      console.log('Found him correct');
+      const status = document.querySelector(`#${character.id}`);
+      status.style.backgroundColor = '#3dd900';
+      console.log(`Found ${character.id}`);
     } else {
-      console.log(character.left, usersY, character.right);
       console.log('keep looking wrong');
     }
+    handleuserClick();
   };
 
   const handleWindowResize = () => {
@@ -71,10 +80,15 @@ const CharacterSelect = ({ usersX, usersY, handleuserClick, userClick }) => {
   return (
     <div className="menu">
       <ul>
-        <li onClick={() => searchCharaterID('goat')}>Goat eating grass</li>
-        <li onClick={() => searchCharaterID('sumo')}>Sumo wrestler</li>
-        <li onClick={() => searchCharaterID('kangaroo')}>Kangaroo_mascott</li>
-        <li onClick={() => searchCharaterID('sky')}>sky driver</li>
+        <li id="bird" onClick={() => searchCharaterID('bird')}>
+          Black Bird
+        </li>
+        <li id="skater" onClick={() => searchCharaterID('skater')}>
+          Wiped out
+        </li>
+        <li id="sky" onClick={() => searchCharaterID('sky')}>
+          sky driver
+        </li>
       </ul>
     </div>
   );
