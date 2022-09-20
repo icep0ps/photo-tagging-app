@@ -1,11 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const Timer = () => {
+const Timer = ({ isGameStarted, gameover }) => {
+  const [time, setTime] = useState();
+
   let hours = 0;
   let minutes = 0;
   let seconds = 0;
 
-  useEffect(() => {}, [seconds]);
+  useEffect(() => {
+    if (gameover) {
+      stopTimer();
+      return;
+    }
+    if (isGameStarted) {
+      startTimer();
+      return;
+    }
+  }, [seconds, isGameStarted, gameover]);
 
   const setTimer = () => {
     seconds++;
@@ -29,7 +40,9 @@ const Timer = () => {
     clearInterval(time);
   };
 
-  const time = setInterval(setTimer, 1000);
+  const startTimer = () => {
+    setTime(setInterval(setTimer, 1000));
+  };
 
   return (
     <div className="timer">

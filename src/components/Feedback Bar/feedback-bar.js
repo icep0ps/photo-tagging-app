@@ -1,10 +1,10 @@
 import React from 'react';
 import Timer from './Timer';
 
-const FeedbackBar = () => {
+const FeedbackBar = ({ isGameStarted, gameover }) => {
   return (
     <div className="feedback-bar">
-      <Timer></Timer>
+      <Timer isGameStarted={isGameStarted} gameover={gameover}></Timer>
       <div className="charators">
         <div className="charator">
           <span className="status" id="bird"></span>

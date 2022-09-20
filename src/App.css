@@ -169,4 +169,35 @@ img {
 
 li {
   cursor: pointer;
+  list-style: none;
+}
+
+.start-screen {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  position: fixed;
+  padding: 10px;
+  border-radius: 10px;
+  top: 30%;
+  left: 40%;
+  gap: 30px;
+  z-index: 1;
+  background-color: #1c79ed;
+}
+.start-screen h1 {
+  font-size: 3rem;
+}
+
+.start-screen li {
+  font-size: 2rem;
+}
+
+.start-screen button {
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  background-color: #3dd900;
+  padding: 20px;
 }

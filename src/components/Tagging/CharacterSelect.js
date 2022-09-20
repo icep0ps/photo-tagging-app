@@ -1,40 +1,20 @@
 import React, { useEffect } from 'react';
 
-const CharacterSelect = ({ usersX, usersY, handleuserClick, userClick }) => {
-  const targetFactory = (name, top, bottom, left, right) => {
-    return {
-      id: name,
-      top: top,
-      bottom: bottom,
-      left: left,
-      right: right,
-      isFound: false,
-    };
-  };
-
-  const sky = targetFactory(
-    'sky',
-    16.19697419163453,
-    17.798872738059924,
-    45.27896995708154,
-    48.497854077253216
-  );
-
-  const bird = targetFactory(
-    'bird',
-    49.89617324236132,
-    51.61673094037378,
-    16.630901287553648,
-    19.15236051502146
-  );
-
-  const wipeout = targetFactory(
-    'wipeout',
-    85.1972708395135,
-    87.71877781073866,
-    69.47424892703863,
-    73.92703862660944
-  );
+const CharacterSelect = ({
+  usersX,
+  usersY,
+  handleuserClick,
+  userClick,
+  characters,
+  sky,
+  bird,
+  wipeout,
+  setCharacters,
+  setGameover,
+  setIsGameStarted,
+}) => {
+  const allAreCharactersFound = () =>
+    characters.every((character) => character.isFound === true);
   const searchCharaterID = (character_id) => {
     switch (character_id) {
       case 'bird':
@@ -58,12 +38,23 @@ const CharacterSelect = ({ usersX, usersY, handleuserClick, userClick }) => {
       usersX >= character.top &&
       usersX <= character.bottom
     ) {
+      const found = characters.map((characterToBeFound) => {
+        if (characterToBeFound.id === character.id) {
+          characterToBeFound.isFound = true;
+        }
+
+        return characterToBeFound;
+      });
+      setCharacters(found);
       const status = document.querySelector(`#${character.id}`);
       status.style.backgroundColor = '#3dd900';
-      console.log(`Found ${character.id}`);
     } else {
-      console.log('keep looking wrong');
     }
+    if (allAreCharactersFound()) {
+      setIsGameStarted(false);
+      setGameover(true);
+    }
+
     handleuserClick();
   };
 
