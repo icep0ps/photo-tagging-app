@@ -2,7 +2,6 @@ import React from 'react';
 
 const Nav = ({ setToggleLeaderbaord, toggleLeaderboard }) => {
   const showLeaderboadr = () => {
-    console.log('changed');
     setToggleLeaderbaord(!toggleLeaderboard);
   };
   return (

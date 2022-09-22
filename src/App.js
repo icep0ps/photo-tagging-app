@@ -1,48 +1,41 @@
+import './App.css';
 import Nav from './components/Nav';
-import React, { useEffect, useState } from 'react';
-import StartScreen from './components/startMenu';
-import Leaderboard from './components/Leaderboard';
 import Photo from './components/Tagging/Photo';
+import React, { useEffect, useState } from 'react';
+import { GameProvider } from './context/GameContext';
+import StartScreen from './components/Screens/startMenu';
+import Leaderboard from './components/Screens/Leaderboard';
 import Notification from './components/Tagging/Notification';
 import FeedbackBar from './components/Feedback Bar/feedback-bar';
-import './App.css';
+import GameoverScreen from './components/Screens/GameoverScreen';
 
 function App() {
-  const [gameover, setGameover] = useState(false);
-  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [userTime, setUserTime] = useState('');
+  const [completedTime, setCompletedTime] = useState('');
   const [toggleLeaderboard, setToggleLeaderbaord] = useState(false);
 
-  const startGame = () => {
-    const body = document.querySelector('body');
-    body.style.overflowY = 'scroll';
-    setIsGameStarted(true);
-  };
-
-  useEffect(() => {}, [toggleLeaderboard]);
+  useEffect(() => {
+    console.log(toggleLeaderboard);
+  }, [toggleLeaderboard]);
 
   return (
     <div className="App">
-      <StartScreen
-        startGame={startGame}
-        isGameStarted={isGameStarted}
-      ></StartScreen>
-      <Nav
-        toggleLeaderboard={toggleLeaderboard}
-        setToggleLeaderbaord={setToggleLeaderbaord}
-      />
-      <FeedbackBar isGameStarted={isGameStarted} gameover={gameover} />
-      <Photo
-        setIsGameStarted={setIsGameStarted}
-        isGameStarted={isGameStarted}
-        setGameover={setGameover}
-      >
-        <Notification />
-      </Photo>
-      {toggleLeaderboard && !isGameStarted ? (
-        <Leaderboard toggle={toggleLeaderboard} />
-      ) : (
-        ''
-      )}
+      <GameProvider>
+        <StartScreen />
+        <GameoverScreen completedTime={completedTime} userTime={userTime} />
+        <Nav
+          toggleLeaderboard={toggleLeaderboard}
+          setToggleLeaderbaord={setToggleLeaderbaord}
+        />
+        <FeedbackBar
+          setUserTime={setUserTime}
+          setCompletedTime={setCompletedTime}
+        />
+        <Photo>
+          <Notification />
+        </Photo>
+        {toggleLeaderboard ? <Leaderboard /> : false}
+      </GameProvider>
     </div>
   );
 }

@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { useContext } from 'react';
+import { GameContext } from '../../context/GameContext';
 
 const CharacterSelect = ({
   usersX,
@@ -10,9 +12,9 @@ const CharacterSelect = ({
   bird,
   wipeout,
   setCharacters,
-  setGameover,
-  setIsGameStarted,
 }) => {
+  const { setGameover, setIsGameStarted } = useContext(GameContext);
+
   const allAreCharactersFound = () =>
     characters.every((character) => character.isFound === true);
   const searchCharaterID = (character_id) => {
@@ -54,18 +56,17 @@ const CharacterSelect = ({
       setIsGameStarted(false);
       setGameover(true);
     }
-
     handleuserClick();
   };
 
-  const handleWindowResize = () => {
+  const handleMenuResize = () => {
     const menu = document.querySelector('.menu');
     menu.style.setProperty('top', `${usersX + 2}%`);
     menu.style.setProperty('left', `${usersY + 5}%`);
   };
 
   useEffect(() => {
-    handleWindowResize();
+    handleMenuResize();
   }, [userClick]);
 
   return (
@@ -78,7 +79,7 @@ const CharacterSelect = ({
           Wiped out
         </li>
         <li id="sky" onClick={() => searchCharaterID('sky')}>
-          sky driver
+          sky diver
         </li>
       </ul>
     </div>

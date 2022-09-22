@@ -145,8 +145,14 @@ img {
   border-radius: 5px;
   padding: 10px;
   top: 50%;
+  z-index: 20;
   transform: translate(-50%, -50%);
   background-color: #1c79ed;
+}
+
+.leaderboard ol {
+  overflow-y: scroll;
+  max-height: 450px;
 }
 
 .leaderboard h1 {
@@ -195,9 +201,48 @@ li {
 
 .start-screen button {
   cursor: pointer;
-  border: none;
-  border-radius: 10px;
+
   font-size: 1.2rem;
   background-color: #3dd900;
   padding: 20px;
+}
+
+.gameover {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  position: fixed;
+  padding: 10px;
+  border-radius: 10px;
+  top: 30%;
+  left: 40%;
+  gap: 10px;
+  z-index: 1;
+  height: 300px;
+  background-color: #1c79ed;
+}
+
+.gameover h1 {
+  font-size: 2.5rem;
+}
+
+.gameover p {
+  font-size: 1.5rem;
+}
+
+input {
+  color: black;
+  padding: 10px;
+  font-size: 1.5rem;
+}
+
+.gameover button {
+  padding: 10px;
+  background-color: #3dd900;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { GameContext } from '../../context/GameContext';
 
-const Timer = ({ isGameStarted, gameover }) => {
+const Timer = ({ setCompletedTime, setUserTime }) => {
+  const { gameover, isGameStarted } = useContext(GameContext);
+
   const [time, setTime] = useState();
-
-  let hours = 0;
-  let minutes = 0;
-  let seconds = 0;
+  const [stateHours, setstateHours] = useState(0);
+  const [stateMinutes, setstateMinutes] = useState(0);
+  const [stateSeconds, setstateSeconds] = useState(0);
+  const [stateMilliseconds, setMilliSeconds] = useState(0);
 
   useEffect(() => {
     if (gameover) {
@@ -16,27 +20,28 @@ const Timer = ({ isGameStarted, gameover }) => {
       startTimer();
       return;
     }
-  }, [seconds, isGameStarted, gameover]);
+  }, [isGameStarted, gameover]);
 
   const setTimer = () => {
-    seconds++;
-    const time = document.querySelector('#time');
-    time.innerText = `Timer: ${hours} hours: ${minutes} minutes : ${seconds} seconds`;
+    setstateSeconds((prev) => prev + 1);
+    setMilliSeconds((prev) => prev + 1000);
 
-    if (seconds === 59) {
-      seconds = 0;
-      minutes++;
+    if (stateSeconds === 59) {
+      setstateSeconds(0);
+      setstateMinutes((prev) => prev + 1);
       return;
     }
-    if (minutes === 59) {
-      hours++;
-      minutes = 0;
-      seconds = 0;
+    if (stateMinutes === 59) {
+      setstateMinutes(0);
+      setstateSeconds(0);
+      setstateHours((prev) => prev + 1);
       return;
     }
   };
 
   const stopTimer = () => {
+    setUserTime(stateMilliseconds);
+    setCompletedTime(`${stateHours}hr ${stateMinutes}min ${stateSeconds}sec`);
     clearInterval(time);
   };
 
@@ -47,7 +52,8 @@ const Timer = ({ isGameStarted, gameover }) => {
   return (
     <div className="timer">
       <p id="time">
-        Timer: {hours} hours: {minutes} minutes : {seconds} seconds
+        Timer: {stateHours} hours: {stateMinutes} minutes : {stateSeconds}{' '}
+        seconds
       </p>
     </div>
   );

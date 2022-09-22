@@ -1,54 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CharacterSelect from './CharacterSelect';
+import { getDoc, doc } from 'firebase/firestore';
+import { db } from '../../firebase/firebase-config';
+import { useContext } from 'react';
+import { GameContext } from '../../context/GameContext';
 
-const Photo = ({ isGameStarted, setGameover, setIsGameStarted }) => {
-  const targetFactory = (name, top, bottom, left, right) => {
-    return {
-      id: name,
-      top: top,
-      bottom: bottom,
-      left: left,
-      right: right,
-      isFound: false,
+const Photo = () => {
+  const { isGameStarted } = useContext(GameContext);
+
+  const skyRef = doc(db, 'characters', 'sky');
+  const birdRef = doc(db, 'characters', 'bird');
+  const wipeoutRef = doc(db, 'characters', 'wipeout');
+
+  const [skyState, setSkyState] = useState({});
+  const [birdState, setBirdState] = useState({});
+  const [wipeoutState, setWipeoutState] = useState({});
+  const [characters, setCharacters] = useState([]);
+
+  useEffect(() => {
+    const getCharacters = async () => {
+      const sky = await getDoc(skyRef);
+      const bird = await getDoc(birdRef);
+      const wipeout = await getDoc(wipeoutRef);
+
+      setSkyState(sky.data());
+      setBirdState(bird.data());
+      setWipeoutState(wipeout.data());
+      setCharacters([sky.data(), bird.data(), wipeout.data()]);
     };
-  };
 
-  const sky = targetFactory(
-    'sky',
-    16.19697419163453,
-    17.798872738059924,
-    45.27896995708154,
-    48.497854077253216
-  );
+    getCharacters();
+  }, []);
 
-  const bird = targetFactory(
-    'bird',
-    49.89617324236132,
-    51.61673094037378,
-    16.630901287553648,
-    19.15236051502146
-  );
-
-  const wipeout = targetFactory(
-    'wipeout',
-    85.1972708395135,
-    87.71877781073866,
-    69.47424892703863,
-    73.92703862660944
-  );
-
-  const [skyState, setSkyState] = useState(sky);
-  const [birdState, setBirdState] = useState(bird);
-  const [wipeoutState, setWipeoutState] = useState(wipeout);
-  const [characters, setCharacters] = useState([
-    skyState,
-    birdState,
-    wipeoutState,
-  ]);
-
-  const [userClick, setUserClick] = useState(false);
   const [usersX, setUsersX] = useState();
   const [usersY, setUsersY] = useState();
+  const [userClick, setUserClick] = useState(false);
 
   const handleClick = (event) => {
     const photoHeight = document.querySelector('.photo').offsetHeight;
@@ -78,9 +64,7 @@ const Photo = ({ isGameStarted, setGameover, setIsGameStarted }) => {
           sky={skyState}
           wipeout={wipeoutState}
           setCharacters={setCharacters}
-          setGameover={setGameover}
-          setIsGameStarted={setIsGameStarted}
-        ></CharacterSelect>
+        />
       ) : (
         ''
       )}
