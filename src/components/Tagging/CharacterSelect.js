@@ -1,88 +1,57 @@
-import React, { useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GameContext } from '../../context/GameContext';
 
-const CharacterSelect = ({
-  usersX,
-  usersY,
-  handleuserClick,
-  userClick,
-  characters,
-  sky,
-  bird,
-  wipeout,
-  setCharacters,
-}) => {
-  const { setGameover, setIsGameStarted } = useContext(GameContext);
+const CharacterSelect = ({ usersX, usersY, characters: charactersMap }) => {
+  const [characters, setCharacters] = useState([]);
 
-  const allAreCharactersFound = () =>
-    characters.every((character) => character.isFound === true);
-  const searchCharaterID = (character_id) => {
-    switch (character_id) {
-      case 'bird':
-        verifyCharater(bird, usersX, usersY);
-        break;
-      case 'skater':
-        verifyCharater(wipeout, usersX, usersY);
-        break;
-      case 'sky':
-        verifyCharater(sky, usersX, usersY);
-        break;
-      default:
-        break;
-    }
+  const checkIfFound = (value, key, map) => {
+    console.log(key, value.isFound);
   };
 
-  const verifyCharater = (character, usersX, usersY) => {
-    if (
-      usersY >= character.left &&
-      usersY <= character.right &&
-      usersX >= character.top &&
-      usersX <= character.bottom
-    ) {
-      const found = characters.map((characterToBeFound) => {
-        if (characterToBeFound.id === character.id) {
-          characterToBeFound.isFound = true;
-        }
+  const convertCharactersMapToArray = () => {
+    const charactersarry = [];
+    charactersMap.forEach((character) => {
+      charactersarry.push(character);
+    });
 
-        return characterToBeFound;
-      });
-      setCharacters(found);
-      const status = document.querySelector(`#${character.id}`);
-      status.style.backgroundColor = '#3dd900';
-    } else {
-    }
-    if (allAreCharactersFound()) {
-      setIsGameStarted(false);
-      setGameover(true);
-    }
-    handleuserClick();
-  };
-
-  const handleMenuResize = () => {
-    const menu = document.querySelector('.menu');
-    menu.style.setProperty('top', `${usersX + 2}%`);
-    menu.style.setProperty('left', `${usersY + 5}%`);
+    setCharacters(charactersarry);
+    return charactersarry;
   };
 
   useEffect(() => {
-    handleMenuResize();
-  }, [userClick]);
+    convertCharactersMapToArray();
+  }, []);
+
+  const { setGameover, setIsGameStarted } = useContext(GameContext);
+
+  const allAreCharactersFound = () => charactersMap.forEach(checkIfFound);
+
+  const isCharacterFound = (character_id) => {
+    const character = charactersMap.get(character_id);
+    if (character.isCharacterFound(usersX, usersY)) {
+      const status = document.querySelector(`#${character.id}`);
+      status.style.backgroundColor = '#3dd900';
+
+      if (allAreCharactersFound()) {
+        setIsGameStarted(false);
+        setGameover(true);
+      }
+    }
+  };
 
   return (
-    <div className="menu">
-      <ul>
-        <li id="bird" onClick={() => searchCharaterID('bird')}>
-          Black Bird
-        </li>
-        <li id="skater" onClick={() => searchCharaterID('skater')}>
-          Wiped out
-        </li>
-        <li id="sky" onClick={() => searchCharaterID('sky')}>
-          sky diver
-        </li>
-      </ul>
-    </div>
+    <ul>
+      {characters.map((character) => {
+        const { id } = character;
+        return (
+          <li id={id} onClick={() => isCharacterFound(id)} key={id}>
+            {id}
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 
